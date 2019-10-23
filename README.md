@@ -1,4 +1,4 @@
-![Nexmo](app/assets/images/nexmo.png)
+![Nexmo](app/assets/images/nexmo_small.png)
 
 
 # Messages & Dispatch supporting server
