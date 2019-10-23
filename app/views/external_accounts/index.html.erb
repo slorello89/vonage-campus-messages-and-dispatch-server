@@ -1,0 +1,75 @@
+<h1>External Accounts</h1>
+
+<% @accounts.inspect %>
+
+<% if @accounts.count == 0 %>
+  <p>None.</p>
+<% else %>
+  <table class="table table-sm table-borderless table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Provider</th>
+        <th scope="col">Name</th>
+        <th scope="col">External ID</th>
+        <th scope="col">Status</th>
+        <th scope="col">Api key</th>
+        <th scope="col">&nbsp;</th>
+      </tr>
+    </thead>
+  <% @accounts.each do |app|  %>
+    <tr>
+      <td><%= app[:provider] %></td>
+      <td><%= app[:name] %></td>
+      <td>
+        <%= app[:external_id] %>
+      </td>
+      <td>
+        <% if !app[:applications].blank? && app[:applications].include?(@nexmo_app.app_id) %>
+          Linked to this application
+        <% else %>
+          Not linked
+        <% end %>
+      </td>
+      <td><%= app[:api_key] %></td>
+      <td class="text-right">
+      <% link_to "Delete", external_accounts_remove_path(provider: app[:provider], external_id: app[:external_id]), method: :post, class: 'btn btn-sm btn-danger' %>
+      <!-- <% app %> -->
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+<hr />
+
+<% end %>
+
+
+<h4 class="mt-5">Link Facebook page</h4>
+<p><a href="https://static.nexmo.com/messenger/" target="_blank">https://static.nexmo.com/messenger/</a> using JWT:</p>
+<pre id="appJWT">
+<%= NexmoApi.generate_admin_jwt(@nexmo_app) %>
+</pre>
+<button id="clipboardAppJWT" class="copy-clipboard" data-clipboard-target="#appJWT">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+<hr />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+<script type="text/javascript">
+var clipboard = new ClipboardJS('.copy-clipboard');
+
+clipboard.on('success', function(e) {
+  e.trigger.classList.add('tooltipped')
+  setTimeout(function() {
+    e.trigger.classList.remove('tooltipped')
+  }, 1000);
+  e.clearSelection();
+});
+
+clipboard.on('error', function(e) {
+  console.error('Action:', e.action);
+  console.error('Trigger:', e.trigger);
+});
+</script>

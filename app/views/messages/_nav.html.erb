@@ -1,0 +1,8 @@
+<div class="nav-wrap">
+  <%= link_to "SMS", messages_sms_path, class: "btn btn-outline-primary" + (controller.action_name == "sms" ? " active" : "") %>
+  <%= link_to "MMS", messages_mms_path, class: "btn btn-outline-primary" + (controller.action_name == "mms" ? " active" : "") %>
+  <%= link_to "Facebook Messenger", messages_messenger_path, class: "btn btn-outline-primary" + (controller.action_name == "messenger" ? " active" : "") %>
+  <%= link_to "WhatsApp", messages_whatsapp_path, class: "btn btn-outline-primary" + (controller.action_name == "whatsapp" ? " active" : "") %>
+  <%= link_to "Viber", messages_viber_path, class: "btn btn-outline-primary" + (controller.action_name == "viber" ? " active" : "") %>
+</div>
+<h3 class="mb-2"><%= @page_title %></h3>

@@ -1,0 +1,55 @@
+<h4 class="mt-2">Send an <strong>Image</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="whatsAppFileUrl">URL</label>
+    <input class="form-control" type="text" id="whatsAppFileUrl" value="<%= root_url %>samples/Nexmo.docx">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="whatsAppFileText">Caption</label>
+    <input class="form-control" type="text" id="whatsAppFileText" value="About Nexmo">
+  </div>
+</div>
+
+<pre id="whatsAppFileCurl"></pre>
+<button id="clipboardWhatsappFile" class="copy-clipboard" data-clipboard-target="#whatsAppFileCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updatewhatsAppFileCurl();
+});
+document.getElementById('whatsAppFileUrl').addEventListener('input', function() {
+  updatewhatsAppFileCurl();
+});
+document.getElementById('whatsAppFileText').addEventListener('input', function() {
+  updatewhatsAppFileCurl();
+});
+
+function updatewhatsAppFileCurl() {
+  var code = document.getElementById('whatsAppFileCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  var url = document.getElementById('whatsAppFileUrl');
+  var text = document.getElementById('whatsAppFileText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "file",
+        "file": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updatewhatsAppFileCurl();
+</script>

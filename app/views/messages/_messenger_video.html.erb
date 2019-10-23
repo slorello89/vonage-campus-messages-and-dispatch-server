@@ -1,0 +1,58 @@
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="fbVideoUrl">URL</label>
+    <input class="form-control" type="text" id="fbVideoUrl" value="<%= root_url %>samples/Video.mp4">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="fbVideoText">Caption</label>
+    <input class="form-control" type="text" id="fbVideoText" value="Vonage Campus">
+  </div>
+</div>
+
+<pre id="fbVideoCurl"></pre>
+<button class="copy-clipboard" data-clipboard-target="#fbVideoCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('messengerSender').addEventListener('input', function() {
+  updateWhatsAppVideoCurl();
+});
+document.getElementById('messengerRecipient').addEventListener('input', function() {
+  updateWhatsAppVideoCurl();
+});
+document.getElementById('fbVideoUrl').addEventListener('input', function() {
+  updateWhatsAppVideoCurl();
+});
+document.getElementById('fbVideoText').addEventListener('input', function() {
+  updateWhatsAppVideoCurl();
+});
+
+function updateWhatsAppVideoCurl() {
+  var code = document.getElementById('fbVideoCurl');
+  var sender = document.getElementById('messengerSender');
+  var recipient = document.getElementById('messengerRecipient');
+  var url = document.getElementById('fbVideoUrl');
+  var text = document.getElementById('fbVideoText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "messenger", "id": "` + sender.value + `" },
+    "to": { "type": "messenger", "id": "` + recipient.value + `" },
+    "message": {
+      "content": {
+        "type": "video",
+        "video": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppVideoCurl();
+
+</script>

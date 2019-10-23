@@ -1,0 +1,66 @@
+<%= render partial: 'nav' %>
+
+<p><% @inbound %></p>
+
+<div class="mb-3">
+  <% unless @inbound.blank? || @inbound.message.blank? || @inbound.message.content.blank? %>
+    <strong>Message received [<%= @inbound.message.content.type %>]:</strong> <br />
+    <%= @inbound.message.content.text %>
+  <% else %>
+    <p><strong>No inbound message found - sender and recipent ids required for reply.</strong></p>
+  <% end %>
+</div>
+
+
+<hr class="mt-2 mb-4" />
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="messengerSender">Sender ID</label>
+    <input class="form-control" type="text" id="messengerSender" value="<%= (@inbound.blank? || @inbound.to.blank?) ? "" : @inbound.to.id %>">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="messengerRecipient">Recipient ID</label>
+    <input class="form-control" type="text" id="messengerRecipient" value="<%= (@inbound.blank? || @inbound.from.blank?) ? "" : @inbound.from.id %>">
+  </div>
+</div>
+
+
+<hr class="mt-2 mb-4" />
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="fb-text-tab" data-toggle="tab" href="#fb-text" role="tab" aria-controls="fb-text" aria-selected="true">Text Message</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link " id="fb-image-tab" data-toggle="tab" href="#fb-image" role="tab" aria-controls="fb-image">Image Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="fb-audio-tab" data-toggle="tab" href="#fb-audio" role="tab" aria-controls="fb-audio">Audio Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="fb-video-tab" data-toggle="tab" href="#fb-video" role="tab" aria-controls="fb-video">Video Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="fb-file-tab" data-toggle="tab" href="#fb-file" role="tab" aria-controls="fb-file">File Message</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="fb-text" role="tabpanel" aria-labelledby="fb-text">
+    <%= render partial: 'messenger_text' %>
+  </div>
+    <div class="tab-pane fade show" id="fb-image" role="tabpanel" aria-labelledby="fb-image">
+    <%= render partial: 'messenger_image' %>
+  </div>
+  <div class="tab-pane fade show" id="fb-audio" role="tabpanel" aria-labelledby="fb-audio">
+    <%= render partial: 'messenger_audio' %>
+  </div>
+  <div class="tab-pane fade show" id="fb-video" role="tabpanel" aria-labelledby="fb-video">
+    <%= render partial: 'messenger_video' %>
+  </div>
+  <div class="tab-pane fade show" id="fb-file" role="tabpanel" aria-labelledby="fb-file">
+    <%= render partial: 'messenger_file' %>
+  </div>
+</div>
+
+<%= render partial: 'copy_clipboard' %>

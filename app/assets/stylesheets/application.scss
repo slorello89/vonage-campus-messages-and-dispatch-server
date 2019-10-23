@@ -1,0 +1,170 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+
+.navbar-light {
+  .navbar-nav {
+    a.nav-link {
+      color: #4380ff;
+      text-decoration: none;
+      font-size: 0.85em;
+      font-weight: bold;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    .active>.nav-link {
+      color: #ff8200;
+    }
+  }
+}
+
+
+.nav-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  a {
+    margin: 0 0.25em 0.5em;
+  }
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+  background-color: #ff8200;
+  border-color: #ff8200;
+}
+.btn-outline-primary:hover {
+  background-color: #4380ff;
+  border-color: #4380ff;
+}
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #4380ff;
+  border-color: #4380ff;
+}
+
+.form-auth {
+  width: 100%;
+  max-width: 330px;
+  margin: auto;
+  padding-top: 5rem;
+  
+  .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+    &:focus {
+      z-index: 2;
+    }
+  }
+  input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+
+textarea, pre {
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-size: 0.825em;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5 !important;;
+  padding: 5px;
+}
+
+form.button_to {
+  display: inline;
+}
+
+
+.form-group {
+  label {
+    font-weight: bold;
+    &.simple {
+      font-weight: normal;
+    }
+  }
+}
+.form-control-url {
+  background-color: white !important;
+  font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Courier New",monospace;
+  font-weight: normal;
+  font-size: 0.825em;
+  border: 0.5px solid #f5f5f5;
+}
+.input-group-text-get {
+  background-color: #117bb8;
+  color: white;
+  font-size: 0.9em;
+}
+.input-group-text-post {
+  background-color: #35be8b;
+  color: white;
+  font-size: 0.85em;
+  font-weight: bold;
+  padding: 2px 10px;
+}
+
+
+.tab-content {
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 10px 20px;
+}
+
+
+.senderInfo {
+  display: flex;
+  div:first-child {
+    margin-right: 1em;
+  }
+  div:nth-child(2) {
+    flex: 1;
+  }
+}
+
+
+.copy-clipboard {
+  background: transparent;
+  border: 0;
+  position: relative;
+  margin-bottom: 1em;
+  padding: 0;
+  &:focus {
+    outline: none;
+  }
+  &:focus span {
+    border:1px solid #4D90FE;
+    box-shadow: 0px 0px 5px #4D90FE;
+  }
+}
+
+.tooltipped::after {
+  content: 'Copied!';
+  font-size: 85%;
+  margin-left: 0.5em;
+  color: #3E474F;
+  transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
+}

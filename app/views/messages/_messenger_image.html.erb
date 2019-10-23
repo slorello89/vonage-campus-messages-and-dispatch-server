@@ -1,0 +1,57 @@
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="fbImageUrl">URL</label>
+    <input class="form-control" type="text" id="fbImageUrl" value="<%= root_url %>samples/Campus.png">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="fbImageText">Caption</label>
+    <input class="form-control" type="text" id="fbImageText" value="Vonage Campus">
+  </div>
+</div>
+
+<pre id="fbImageCurl"></pre>
+<button class="copy-clipboard" data-clipboard-target="#fbImageCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+<script type="text/javascript">
+document.getElementById('messengerSender').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('messengerRecipient').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('fbImageUrl').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('fbImageText').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+
+function updateWhatsAppImageCurl() {
+  var code = document.getElementById('fbImageCurl');
+  var sender = document.getElementById('messengerSender');
+  var recipient = document.getElementById('messengerRecipient');
+  var url = document.getElementById('fbImageUrl');
+  var text = document.getElementById('fbImageText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "messenger", "id": "` + sender.value + `" },
+    "to": { "type": "messenger", "id": "` + recipient.value + `" },
+    "message": {
+      "content": {
+        "type": "image",
+        "image": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppImageCurl();
+
+</script>

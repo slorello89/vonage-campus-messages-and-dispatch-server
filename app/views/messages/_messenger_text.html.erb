@@ -1,0 +1,47 @@
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <label for="smsText">Text</label>
+    <input class="form-control" type="text" id="messengerText" value="Have an amazing time!">
+  </div>
+</div>
+
+<pre id="messengerTextCurl"></pre>
+<button class="copy-clipboard" data-clipboard-target="#messengerTextCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('messengerSender').addEventListener('input', function() {
+  updateMessengerTextCurl();
+});
+document.getElementById('messengerRecipient').addEventListener('input', function() {
+  updateMessengerTextCurl();
+});
+document.getElementById('messengerText').addEventListener('input', function() {
+  updateMessengerTextCurl();
+});
+
+function updateMessengerTextCurl() {
+  var code = document.getElementById('messengerTextCurl');
+  var sender = document.getElementById('messengerSender');
+  var recipient = document.getElementById('messengerRecipient');
+  var text = document.getElementById('messengerText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "messenger", "id": "` + sender.value + `" },
+    "to": { "type": "messenger", "id": "` + recipient.value + `" },
+    "message": {
+      "content": {
+        "type": "text",
+        "text": "` + text.value + `"
+      }
+    }
+  }'`
+}
+updateMessengerTextCurl();
+
+</script>

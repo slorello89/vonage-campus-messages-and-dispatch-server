@@ -1,0 +1,73 @@
+<h4 class="mt-2">Send a <strong>WhatsApp Template (MTM)</strong></h4>
+
+<pre id="whatsAppMTMCurl"></pre>
+<button id="clipboard-whatsapp-template" class="copy-clipboard" data-clipboard-target="#whatsAppMTMCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updatewhatsAppMTMCurl();
+});
+
+function updatewhatsAppMTMCurl() {
+  var code = document.getElementById('whatsAppMTMCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content":{
+         "type":"template",
+         "template":{
+            "name":"whatsapp:hsm:technology:nexmo:oh_dev_onboarding_1",
+            "parameters":[
+               {
+                  "default":"- Vonage Connect"
+               },
+               {
+                  "default":"Taking place in SF on Oct 29th-30th."
+               }
+            ]
+         }
+      },
+      "whatsapp": {
+        "policy": "deterministic",
+        "locale": "en-GB"
+      }
+    }
+  }'`
+}
+updatewhatsAppMTMCurl();
+</script>
+
+<pre>
+"name":"whatsapp:hsm:technology:nexmo:dev_onboarding_welcome"
+</pre>
+
+<pre>
+"name":"whatsapp:hsm:technology:nexmo:dev_onboarding_welcome2",
+"parameters":[
+   {
+      "default":"Nexmo"
+   }
+]
+</pre>
+
+<pre>
+"name":"whatsapp:hsm:technology:nexmo:oh_dev_onboarding_1",
+"parameters":[
+   {
+      "default":"- Vonage Connect"
+   },
+   {
+      "default":"Taking place in SF on Oct 29th-30th."
+   }
+]
+</pre>
+

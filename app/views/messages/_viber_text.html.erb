@@ -1,0 +1,44 @@
+<h4 class="mt-2">Send a <strong>Text</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="viberText">Content</label>
+    <input class="form-control" type="text" id="viberText" value="This is a Viber Message sent from the Messages API">
+  </div>
+</div>
+
+<pre id="viberTextCurl"></pre>
+<button id="clipboardWhatsappText" class="copy-clipboard" data-clipboard-target="#viberTextCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('viberDestination').addEventListener('input', function() {
+  updateViberTextCurl();
+});
+document.getElementById('viberText').addEventListener('input', function() {
+  updateViberTextCurl();
+});
+
+function updateViberTextCurl() {
+  var code = document.getElementById('viberTextCurl');
+  var destination = document.getElementById('viberDestination');
+  var text = document.getElementById('viberText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "viber_service_msg", "id": "<%= @viber_id.blank? ? '$VIBER_ID' : @viber_id %>" },
+    "to": { "type": "viber_service_msg", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "text",
+        "text": "` + text.value + `"
+      }
+    }
+  }'`
+}
+updateViberTextCurl();
+</script>

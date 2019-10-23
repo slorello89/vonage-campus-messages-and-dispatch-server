@@ -1,0 +1,56 @@
+<div class="float-md-right">
+  <% link_to raw('Regenerate'), app_regenerate_keys_path, method: :post, class: 'btn btn-sm btn-outline-danger' %>
+  <%= link_to raw('<i class="fas fa-download"></i> Private key'), app_private_key_path, class: 'btn btn-sm btn-outline-primary' %>
+  <%= link_to raw('<i class="fas fa-download"></i> Public key'), app_public_key_path, class: 'btn btn-sm btn-outline-primary' %>
+</div>
+
+<h1 class="mb-5"><%= @nexmo_app.name %></h1>
+
+<table class="table">
+<tr>
+  <th>App id</th>
+  <td><%= @nexmo_app.app_id %></td>
+</tr>
+<tr>
+  <th>App name</th>
+  <td><%= @nexmo_app.name %></td>
+</tr>
+<tr>
+  <th>Inbound URL</th>
+  <td>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text input-group-text-<%= (@nexmo_app.inbound_url_method || "").downcase %>"><%= @nexmo_app.inbound_url_method %></div>
+      </div>
+      <span class="form-control form-control-url"><%= @nexmo_app.inbound_url %></span>
+    </div>
+  </td>
+</tr>
+<tr>
+  <th>Status URL</th>
+  <td>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text input-group-text-<%= (@nexmo_app.status_url_method || "").downcase %>"><%= @nexmo_app.status_url_method %></div>
+      </div>
+      <span class="form-control form-control-url"><%= @nexmo_app.status_url %></span>
+    </div>
+  </td>
+</tr>
+<tr>
+  <th>Phone number</th>
+  <td>
+    <% if @nexmo_app.number_msisdn.blank? %>
+      <%= link_to raw('<i class="fas fa-plus"></i> Add'), numbers_path, class: 'btn btn-outline-primary btn-sm' %>
+    <% else %>
+      <%= @nexmo_app.number_msisdn %> (<%= @nexmo_app.number_country %>)
+    <% end %>
+  </td>
+</tr>
+
+</table>
+
+
+<!-- 
+<%= @nexmo_app.inspect %>
+-->

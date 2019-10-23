@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title><%= content_for?(:title) ? (yield(:title) + ' @ ') : '' %> Nexmo Messages and Dispatch</title>
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+ <%= stylesheet_link_tag 'application', media: 'all' %>
+<%= javascript_pack_tag 'application' %>
+</head>
+<body>
+<main role="main" class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light  border-bottom shadow-sm mb-4">
+    <a href="/" class="navbar-brand"><%= image_tag 'nexmo.png', class: '', style: 'height:30px;' %></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+        
+      <ul class="navbar-nav">
+        <% unless @nexmo_app.blank? %>
+          <li class="nav-item<%= controller.controller_name == "nexmo_app" ? " active" : "" %>"><%= link_to "App Settings", app_path, class: "nav-link" %></li>
+          <li class="nav-item<%= controller.controller_name == "messages" ? " active" : "" %>"><%= link_to "Messages", messages_sms_path, class: "nav-link" %></li>
+          <li class="nav-item<%= controller.controller_name == "dispatch" ? " active" : "" %>"><%= link_to "Dispatch", dispatch_path, class: "nav-link" %></li>
+          <li class="nav-item<%= controller.controller_name == "numbers" ? " active" : "" %>"><%= link_to "Numbers", numbers_path, class: "nav-link" %></li>
+          <li class="nav-item<%= controller.controller_name == "external_accounts" ? " active" : "" %>"><%= link_to "External Accounts", external_accounts_path, class: "nav-link" %></li>
+          <li class="nav-item<%= controller.controller_name == "events" ? " active" : "" %>"><%= link_to "Events", events_path, class: "nav-link" %></li>
+        <% end %>
+        <li class="nav-item"><%= link_to "Log out", logout_path, class: "nav-link", data: {confirm: 'Are you sure?'} %></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <%= render partial: 'layouts/flashes' %>
+  
+  <%= yield %>  
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js" integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+

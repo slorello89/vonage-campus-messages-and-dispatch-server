@@ -1,0 +1,55 @@
+<h4 class="mt-2">Send an <strong>Video</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="whatsAppVideoUrl">URL</label>
+    <input class="form-control" type="text" id="whatsAppVideoUrl" value="<%= root_url %>samples/Video.mp4">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="whatsAppVideoText">Caption</label>
+    <input class="form-control" type="text" id="whatsAppVideoText" value="Vonage Campus">
+  </div>
+</div>
+
+<pre id="whatsAppVideoCurl"></pre>
+<button id="clipboardWhatsappVideo" class="copy-clipboard" data-clipboard-target="#whatsAppVideoCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updatewhatsAppVideoCurl();
+});
+document.getElementById('whatsAppVideoUrl').addEventListener('input', function() {
+  updatewhatsAppVideoCurl();
+});
+document.getElementById('whatsAppVideoText').addEventListener('input', function() {
+  updatewhatsAppVideoCurl();
+});
+
+function updatewhatsAppVideoCurl() {
+  var code = document.getElementById('whatsAppVideoCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  var url = document.getElementById('whatsAppVideoUrl');
+  var text = document.getElementById('whatsAppVideoText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "video",
+        "video": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updatewhatsAppVideoCurl();
+</script>

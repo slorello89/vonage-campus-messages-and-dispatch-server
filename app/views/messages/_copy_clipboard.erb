@@ -1,0 +1,18 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+<script type="text/javascript">
+var clipboard = new ClipboardJS('.copy-clipboard');
+
+clipboard.on('success', function(e) {
+  e.trigger.classList.add('tooltipped')
+  setTimeout(function() {
+    e.trigger.classList.remove('tooltipped')
+  }, 1000);
+  e.clearSelection();
+});
+
+clipboard.on('error', function(e) {
+  console.error('Action:', e.action);
+  console.error('Trigger:', e.trigger);
+});
+</script>

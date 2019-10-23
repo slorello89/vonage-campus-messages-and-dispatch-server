@@ -1,0 +1,69 @@
+<%= render partial: 'nav' %>
+
+
+<% unless @last_message.blank? %>
+  <hr />
+  <h4>Last Message</h4>
+  <strong>From:</strong> <%= @last_message.from.number %><br />
+  <strong>Message:</strong> [<%= @last_message.message.content.type %>] <br />
+  <%= @last_message.message.content.text %>
+  <hr />
+
+  <h4>Send Message</h4>
+<% end %>
+
+<div class="form-group row">
+  <div class="col-sm-2"><strong>From:</strong></div>
+  <div class="col-sm-10"><%= @whatsAppPhoneNumber %></div>
+</div>
+<div class="form-group row">
+  <label for="whatsAppDestination" class="col-sm-2 col-form-label">Destination:</label>
+  <div class="col-sm-10"><input class="form-control numbewrDestination" type="text" id="whatsAppDestination" value=""></div>
+</div>
+
+<%= render partial: 'save_number' %>
+
+
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="whatsapp-text-tab" data-toggle="tab" href="#whatsapp-text" role="tab" aria-controls="whatsapp-text" aria-selected="true">Text Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link " id="whatsapp-image-tab" data-toggle="tab" href="#whatsapp-image" role="tab" aria-controls="whatsapp-image">Image Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="whatsapp-audio-tab" data-toggle="tab" href="#whatsapp-audio" role="tab" aria-controls="whatsapp-audio">Audio Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="whatsapp-video-tab" data-toggle="tab" href="#whatsapp-video" role="tab" aria-controls="whatsapp-video">Video Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="whatsapp-file-tab" data-toggle="tab" href="#whatsapp-file" role="tab" aria-controls="whatsapp-file">File Message</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="whatsapp-mtm-tab" data-toggle="tab" href="#whatsapp-mtm" role="tab" aria-controls="whatsapp-mtm">WhatsApp Template (MTM)</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="whatsapp-text" role="tabpanel" aria-labelledby="whatsapp-text">
+    <%= render partial: 'whatsapp_text' %>
+  </div>
+  <div class="tab-pane fade show" id="whatsapp-image" role="tabpanel" aria-labelledby="whatsapp-image">
+    <%= render partial: 'whatsapp_image' %>
+  </div>
+  <div class="tab-pane fade show" id="whatsapp-audio" role="tabpanel" aria-labelledby="whatsapp-audio">
+    <%= render partial: 'whatsapp_audio' %>
+  </div>
+  <div class="tab-pane fade show" id="whatsapp-video" role="tabpanel" aria-labelledby="whatsapp-video">
+    <%= render partial: 'whatsapp_video' %>
+  </div>
+  <div class="tab-pane fade show" id="whatsapp-file" role="tabpanel" aria-labelledby="whatsapp-file">
+    <%= render partial: 'whatsapp_file' %>
+  </div>
+  <div class="tab-pane fade show" id="whatsapp-mtm" role="tabpanel" aria-labelledby="whatsapp-mtm">
+    <%= render partial: 'whatsapp_mtm' %>
+  </div>
+</div>
+
+<%= render partial: 'copy_clipboard' %>

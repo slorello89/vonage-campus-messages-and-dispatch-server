@@ -1,0 +1,46 @@
+<h4 class="mt-2">Send an <strong>Audio</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="whatsAppAudioUrl">URL</label>
+    <input class="form-control" type="text" id="whatsAppAudioUrl" value="<%= root_url %>samples/Audio.mp3">
+  </div>
+</div>
+
+<pre id="whatsAppAudioCurl"></pre>
+<button id="clipboardWhatsappAudio" class="copy-clipboard" data-clipboard-target="#whatsAppAudioCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updateWhatsAppAudioCurl();
+});
+document.getElementById('whatsAppAudioUrl').addEventListener('input', function() {
+  updateWhatsAppAudioCurl();
+});
+
+function updateWhatsAppAudioCurl() {
+  var code = document.getElementById('whatsAppAudioCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  var url = document.getElementById('whatsAppAudioUrl');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "audio",
+        "audio": { 
+          "url": "` + url.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppAudioCurl();
+</script>

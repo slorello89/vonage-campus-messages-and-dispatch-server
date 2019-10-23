@@ -1,0 +1,53 @@
+<%= render partial: 'nav' %>
+
+
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="smsDestination">Destination</label>
+    <input class="form-control numbewrDestination" type="text" id="smsDestination" value="">
+  </div>
+  <div class="form-group col-md-8">
+    <label for="smsText">Text</label>
+    <input class="form-control" type="text" id="smsText" value="This is an example SMS sent using the Messages API">
+  </div>
+</div>
+
+<pre id="smsCurl"></pre>
+<button id="clipboardSms" class="copy-clipboard" data-clipboard-target="#smsCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+<%= render partial: 'save_number' %>
+<%= render partial: 'copy_clipboard' %>
+
+<script type="text/javascript">
+document.getElementById('smsDestination').addEventListener('input', function() {
+  updateSmsCurl();
+});
+document.getElementById('smsText').addEventListener('input', function() {
+  updateSmsCurl();
+});
+
+function updateSmsCurl() {
+  var code = document.getElementById('smsCurl');
+  var destination = document.getElementById('smsDestination');
+  var text = document.getElementById('smsText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "sms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
+    "to": { "type": "sms", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "text",
+        "text": "` + text.value + `"
+      }
+    }
+  }'`
+}
+updateSmsCurl();
+</script>
+
+

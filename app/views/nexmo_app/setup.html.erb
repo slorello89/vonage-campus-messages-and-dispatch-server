@@ -1,0 +1,17 @@
+<% title "Setup" %>
+
+<h1 class="h2 text-center mt-5 mb-4">Your Messages Applications</h1>
+
+<table class="table table-bordered">
+<% @existing_apps.each do |app| %>
+  <tr>
+    <th><%= app.id %></th>
+    <th><%= app.name %></th>
+    <td>
+      <%= app.capabilities.messages.webhooks.inbound_url.address %><br />
+      <%= app.capabilities.messages.webhooks.status_url.address %>
+    </td>
+    <td><%= link_to "Use", app_reuse_path(id: app.id), method: :post, class: 'btn btn-danger', data: {confirm: "Are you sure? This will reset existing settings."} %></td>
+  </tr>
+<% end %>
+</table>

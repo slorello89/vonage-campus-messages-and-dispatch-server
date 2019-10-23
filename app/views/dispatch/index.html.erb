@@ -1,0 +1,148 @@
+<h1>Dispatch</h1>
+
+
+<p><% @inbound %></p>
+
+<div class="mb-3">
+  <% unless @inbound.blank? || @inbound.message.blank? || @inbound.message.content.blank? %>
+  <strong>Facebook Message received [<%= @inbound.message.content.type %>]:</strong> <br />
+  <%= @inbound.message.content.text %>
+  <% end %>
+</div>
+
+
+<hr class="mt-2 mb-4" />
+
+<h4>Step 1: Facebook Messenger</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="messengerSender">Sender ID</label>
+    <input class="form-control" type="text" id="messengerSender" value="<%= (@inbound.blank? || @inbound.to.blank?) ? "" : @inbound.to.id %>">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="messengerRecipient">Recipient ID</label>
+    <input class="form-control" type="text" id="messengerRecipient" value="<%= (@inbound.blank? || @inbound.from.blank?) ? "" : @inbound.from.id %>">
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="fbImageUrl">Facebook URL</label>
+    <input class="form-control" type="text" id="fbImageUrl" value="<%= root_url %>samples/Campus.png">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="fbImageText">Facebook Caption</label>
+    <input class="form-control" type="text" id="fbImageText" value="Vonage Campus via Dispatch API">
+  </div>
+</div>
+
+
+<hr class="mt-2 mb-4" />
+<h4>Step 2: SMS</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="smsDestination">SMS Destination</label>
+    <input class="form-control numbewrDestination" type="text" id="smsDestination" value="">
+  </div>
+  <div class="form-group col-md-8">
+    <label for="smsText">SMS Text</label>
+    <input class="form-control" type="text" id="smsText" value="This is an example SMS sent using the Dispatch API">
+  </div>
+</div>
+
+
+
+
+
+<hr class="mt-2 mb-4" />
+
+<pre id="apiCallCurl"></pre>
+<button class="copy-clipboard" data-clipboard-target="#apiCallCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+
+<%= render partial: '/messages/copy_clipboard' %>
+
+<%= render partial: '/messages/save_number' %>
+
+<script type="text/javascript">
+
+
+document.getElementById('messengerSender').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+document.getElementById('messengerRecipient').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+document.getElementById('fbImageUrl').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+document.getElementById('fbImageText').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+
+document.getElementById('smsDestination').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+
+document.getElementById('smsText').addEventListener('input', function() {
+  updateDispatchCurl();
+});
+
+
+function updateDispatchCurl() {
+  var code = document.getElementById('apiCallCurl');
+  
+  var sender = document.getElementById('messengerSender');
+  var recipient = document.getElementById('messengerRecipient');
+  var fbUrl = document.getElementById('fbImageUrl');
+  var fbText = document.getElementById('fbImageText');
+
+  var smsDestination = document.getElementById('smsDestination');
+  var smsText = document.getElementById('smsText');
+  
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/dispatch \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "template":"failover",
+    "workflow": [
+      {
+        "from": { "type": "messenger", "id": "` + sender.value + `" },
+        "to": { "type": "messenger", "id": "` + recipient.value + `" },
+        "message": {
+          "content": {
+            "type": "image",
+            "image": { 
+              "url": "` + fbUrl.value + `",
+              "caption": "` + fbText.value + `"
+            }
+          }
+        },
+        "failover":{
+          "expiry_time": 30,
+          "condition_status": "read"
+        }
+      },
+      {
+        "from": { "type": "sms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
+        "to": { "type": "sms", "number": "` + smsDestination.value + `" },
+        "message": {
+          "content": {
+            "type": "text",
+            "text": "` + smsText.value + `"
+          }
+        }
+      }
+    ]
+  }'`
+}
+updateDispatchCurl();
+
+</script>
+

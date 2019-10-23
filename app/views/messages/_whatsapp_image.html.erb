@@ -1,0 +1,55 @@
+<h4 class="mt-2">Send an <strong>Image</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="whatsAppImageUrl">URL</label>
+    <input class="form-control" type="text" id="whatsAppImageUrl" value="<%= root_url %>samples/Campus.png">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="whatsAppImageText">Caption</label>
+    <input class="form-control" type="text" id="whatsAppImageText" value="Vonage Campus">
+  </div>
+</div>
+
+<pre id="whatsAppImageCurl"></pre>
+<button id="clipboardWhatsappImage" class="copy-clipboard" data-clipboard-target="#whatsAppImageCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('whatsAppImageUrl').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('whatsAppImageText').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+
+function updateWhatsAppImageCurl() {
+  var code = document.getElementById('whatsAppImageCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  var url = document.getElementById('whatsAppImageUrl');
+  var text = document.getElementById('whatsAppImageText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "image",
+        "image": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppImageCurl();
+</script>

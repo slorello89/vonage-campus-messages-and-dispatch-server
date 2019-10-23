@@ -1,0 +1,19 @@
+<script type="text/javascript">
+var savedNum = localStorage.getItem('senderNumber');
+var noSavedNum = savedNum === null
+
+if (noSavedNum) {
+  var numberField = document.querySelector('.numbewrDestination');
+  numberField.addEventListener('blur', function() {
+    var senderNumber = event.target.value;
+    localStorage.setItem('senderNumber', senderNumber);
+  }, false);
+} else {
+  document.querySelector('.numbewrDestination').value = savedNum
+  var numberField = document.querySelector('.numbewrDestination');
+  numberField.addEventListener('blur', function() {
+    var senderNumber = event.target.value;
+    localStorage.setItem('senderNumber', senderNumber);
+  }, false);
+}
+</script>

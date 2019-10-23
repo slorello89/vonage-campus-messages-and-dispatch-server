@@ -1,0 +1,66 @@
+<%= render partial: 'nav' %>
+
+
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <label for="mmsDestination">Destination</label>
+    <input class="form-control numbewrDestination" type="text" id="mmsDestination" value="">
+  </div>
+</div>
+
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="mmspImageUrl">URL</label>
+    <input class="form-control" type="text" id="mmspImageUrl" value="<%= root_url %>samples/Campus.png">
+  </div>
+  <div class="form-group col-md-6">
+    <label for="mmsAppImageText">Caption</label>
+    <input class="form-control" type="text" id="mmsAppImageText" value="Vonage Campus">
+  </div>
+</div>
+
+<pre id="mmsAppImageCurl"></pre>
+<button id="clipboardMmsImage" class="copy-clipboard" data-clipboard-target="#mmsAppImageCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+<%= render partial: 'save_number' %>
+<%= render partial: 'copy_clipboard' %>
+
+<script type="text/javascript">
+document.getElementById('mmsDestination').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('mmspImageUrl').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+document.getElementById('mmsAppImageText').addEventListener('input', function() {
+  updateWhatsAppImageCurl();
+});
+
+function updateWhatsAppImageCurl() {
+  var code = document.getElementById('mmsAppImageCurl');
+  var destination = document.getElementById('mmsDestination');
+  var url = document.getElementById('mmspImageUrl');
+  var text = document.getElementById('mmsAppImageText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "mms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
+    "to": { "type": "mms", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "image",
+        "image": { 
+          "url": "` + url.value + `",
+          "caption": "` + text.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppImageCurl();
+</script>

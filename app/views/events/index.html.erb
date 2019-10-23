@@ -1,0 +1,25 @@
+<div class="row mt-4 justify-content-center">
+  <div class="col-12">
+    <h2 class="text-left">Events</h2>
+
+    <div id="logs"></div>
+  </div>
+</div>
+
+
+<script>
+
+window.onload = function() {
+  var timestamp = Math.floor(Date.now() / 1000) - 1800;
+
+  function getEvents() {
+    $.get( '/events/raw?app_id=<%= @nexmo_app.app_id %>&since=' + timestamp, function( data ) {
+      $('#logs').prepend(data);
+    });
+    timestamp = Math.floor(Date.now() / 1000);
+    setTimeout(getEvents, 5000);
+  }
+  setTimeout(getEvents, 1000);
+};
+
+</script>

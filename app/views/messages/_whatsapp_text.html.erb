@@ -1,0 +1,44 @@
+<h4 class="mt-2">Send a <strong>Text</strong> message</h4>
+
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="whatsAppText">Content</label>
+    <input class="form-control" type="text" id="whatsAppText" value="This is a WhatsApp Message sent from the Messages API">
+  </div>
+</div>
+
+<pre id="whatsAppTextCurl"></pre>
+<button id="clipboardWhatsappText" class="copy-clipboard" data-clipboard-target="#whatsAppTextCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('whatsAppDestination').addEventListener('input', function() {
+  updateWhatsAppTextCurl();
+});
+document.getElementById('whatsAppText').addEventListener('input', function() {
+  updateWhatsAppTextCurl();
+});
+
+function updateWhatsAppTextCurl() {
+  var code = document.getElementById('whatsAppTextCurl');
+  var destination = document.getElementById('whatsAppDestination');
+  var text = document.getElementById('whatsAppText');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+    "message": {
+      "content": {
+        "type": "text",
+        "text": "` + text.value + `"
+      }
+    }
+  }'`
+}
+updateWhatsAppTextCurl();
+</script>

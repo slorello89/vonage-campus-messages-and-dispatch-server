@@ -1,0 +1,49 @@
+<div class="form-row">
+  <div class="form-group col-md-6">
+    <label for="fbAudioUrl">URL</label>
+    <input class="form-control" type="text" id="fbAudioUrl" value="<%= root_url %>samples/Audio.mp3">
+  </div>
+</div>
+
+<pre id="fbAudioCurl"></pre>
+<button class="copy-clipboard" data-clipboard-target="#fbAudioCurl">
+  <span class="btn btn-sm btn-outline-primary">Copy</span>
+</button>
+
+
+<script type="text/javascript">
+document.getElementById('messengerSender').addEventListener('input', function() {
+  updateWhatsAppAudioCurl();
+});
+document.getElementById('messengerRecipient').addEventListener('input', function() {
+  updateWhatsAppAudioCurl();
+});
+document.getElementById('fbAudioUrl').addEventListener('input', function() {
+  updateWhatsAppAudioCurl();
+});
+
+function updateWhatsAppAudioCurl() {
+  var code = document.getElementById('fbAudioCurl');
+  var sender = document.getElementById('messengerSender');
+  var recipient = document.getElementById('messengerRecipient');
+  var url = document.getElementById('fbAudioUrl');
+  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+  -H 'Authorization: Bearer <%= @app_jwt %>' \\
+  -H 'Content-Type: application/json' \\
+  -H 'Accept: application/json' \\
+  -d '{
+    "from": { "type": "messenger", "id": "` + sender.value + `" },
+    "to": { "type": "messenger", "id": "` + recipient.value + `" },
+    "message": {
+      "content": {
+        "type": "audio",
+        "audio": { 
+          "url": "` + url.value + `"
+        }
+      }
+    }
+  }'`
+}
+updateWhatsAppAudioCurl();
+
+</script>
