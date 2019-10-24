@@ -34,23 +34,31 @@ function updateWhatsAppFileCurl() {
   var recipient = document.getElementById('messengerRecipient');
   var url = document.getElementById('fbFileUrl');
   var text = document.getElementById('fbFileText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "messenger", "id": "` + sender.value + `" },
-    "to": { "type": "messenger", "id": "` + recipient.value + `" },
-    "message": {
-      "content": {
-        "type": "file",
-        "file": { 
-          "url": "` + url.value + `",
-          "caption": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "messenger", "id": "` + sender.value + `" },
+      "to": { "type": "messenger", "id": "` + recipient.value + `" },
+      "message": {
+        "content": {
+          "type": "file",
+          "file": { 
+            "url": "` + url.value + `",
+            "caption": "` + text.value + `"
+          }
         }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{ \\"from\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + sender.value + `\\" }, \\"to\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + recipient.value + `\\" }, \\"message\\": { \\"content\\": { \\"type\\": \\"file\\", \\"file\\": { \\"url\\": \\"` + url.value + `\\", \\"caption\\": \\"` + text.value + `\\" } } }}"`
+  <% end %>
 }
 updateWhatsAppFileCurl();
 

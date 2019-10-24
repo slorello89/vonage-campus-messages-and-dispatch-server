@@ -27,20 +27,28 @@ function updateMessengerTextCurl() {
   var sender = document.getElementById('messengerSender');
   var recipient = document.getElementById('messengerRecipient');
   var text = document.getElementById('messengerText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "messenger", "id": "` + sender.value + `" },
-    "to": { "type": "messenger", "id": "` + recipient.value + `" },
-    "message": {
-      "content": {
-        "type": "text",
-        "text": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "messenger", "id": "` + sender.value + `" },
+      "to": { "type": "messenger", "id": "` + recipient.value + `" },
+      "message": {
+        "content": {
+          "type": "text",
+          "text": "` + text.value + `"
+        }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+      -H "Authorization: Bearer <%= @app_jwt %>" ^
+      -H "Content-Type: application/json" ^
+      -H "Accept: application/json" ^
+      -d "{, \\"from\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + sender.value + `\\" },, \\"to\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + recipient.value + `\\" },, \\"message\\": {, \\"content\\": {, \\"type\\": \\"text\\",, \\"text\\": \\"` + text.value + `\\", }, },}"`
+  <% end %>
 }
 updateMessengerTextCurl();
 

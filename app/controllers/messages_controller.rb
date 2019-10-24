@@ -33,9 +33,19 @@ class MessagesController < ApplicationController
     @page_title = "Viber"
   end
 
+  def switch_os
+    if params[:os].blank? ||  !(["windows", "mac"].include?(params[:os]))
+      rredirect_back fallback_location: root_path, alert: "Invalid OS"
+      return
+    end
+    session[:os] = params[:os]
+    redirect_back fallback_location: root_path
+  end
   private
 
   def set_app_jwt
     @app_jwt = NexmoApi.generate_admin_jwt(@nexmo_app)
+    session[:os] ||= "macos"
+    @os = session[:os]
   end
 end

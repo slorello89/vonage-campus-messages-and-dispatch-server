@@ -168,3 +168,12 @@ form.button_to {
   color: #3E474F;
   transition: all .65s cubic-bezier(.84,-0.18,.31,1.26) .2s;
 }
+
+
+pre {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}

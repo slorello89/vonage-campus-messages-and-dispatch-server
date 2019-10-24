@@ -27,22 +27,30 @@ function updateWhatsAppAudioCurl() {
   var sender = document.getElementById('messengerSender');
   var recipient = document.getElementById('messengerRecipient');
   var url = document.getElementById('fbAudioUrl');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "messenger", "id": "` + sender.value + `" },
-    "to": { "type": "messenger", "id": "` + recipient.value + `" },
-    "message": {
-      "content": {
-        "type": "audio",
-        "audio": { 
-          "url": "` + url.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "messenger", "id": "` + sender.value + `" },
+      "to": { "type": "messenger", "id": "` + recipient.value + `" },
+      "message": {
+        "content": {
+          "type": "audio",
+          "audio": { 
+            "url": "` + url.value + `"
+          }
         }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{ \\"from\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + sender.value + `\\" }, \\"to\\": { \\"type\\": \\"messenger\\", \\"id\\": \\"` + recipient.value + `\\" }, \\"message\\": { \\"content\\": { \\"type\\": \\"audio\\", \\"audio\\": { \\"url\\": \\"` + url.value + `\\" } } }}"`
+  <% end %>
 }
 updateWhatsAppAudioCurl();
 

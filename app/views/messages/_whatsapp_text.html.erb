@@ -25,20 +25,28 @@ function updateWhatsAppTextCurl() {
   var code = document.getElementById('whatsAppTextCurl');
   var destination = document.getElementById('whatsAppDestination');
   var text = document.getElementById('whatsAppText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
-    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
-    "message": {
-      "content": {
-        "type": "text",
-        "text": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+      "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+      "message": {
+        "content": {
+          "type": "text",
+          "text": "` + text.value + `"
+        }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{ \\"from\\": { \\"type\\": \\"whatsapp\\", \\"number\\": \\"<%= @whatsAppPhoneNumber.blank? ? "$WHATSAPP_FROM_NUMBER" : @whatsAppPhoneNumber %>\\" }, \\"to\\": { \\"type\\": \\"whatsapp\\", \\"number\\": \\"` + destination.value + `\\" }, \\"message\\": { \\"content\\": { \\"type\\": \\"text\\", \\"text\\": \\"` + text.value + `\\" } }}"`
+  <% end %>
 }
 updateWhatsAppTextCurl();
 </script>

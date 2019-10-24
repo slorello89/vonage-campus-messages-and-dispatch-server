@@ -1,3 +1,11 @@
+<div style="float:left;">
+  <% if @os == "windows" %>
+    <%= link_to "Switch to MacOS/Linux", switch_os_path(os: "mac"), method: :post, class: 'btn btn-sm btn-outline-primary' %>
+  <% else %>
+    <%= link_to "Switch to Windows", switch_os_path(os: "windows"), method: :post, class: 'btn btn-sm btn-outline-primary' %>
+  <% end %>
+</div>
+
 <div class="nav-wrap">
   <%= link_to "SMS", messages_sms_path, class: "btn btn-outline-primary" + (controller.action_name == "sms" ? " active" : "") %>
   <%= link_to "MMS", messages_mms_path, class: "btn btn-outline-primary" + (controller.action_name == "mms" ? " active" : "") %>
@@ -5,4 +13,5 @@
   <%= link_to "WhatsApp", messages_whatsapp_path, class: "btn btn-outline-primary" + (controller.action_name == "whatsapp" ? " active" : "") %>
   <%= link_to "Viber", messages_viber_path, class: "btn btn-outline-primary" + (controller.action_name == "viber" ? " active" : "") %>
 </div>
+
 <h3 class="mb-2"><%= @page_title %></h3>

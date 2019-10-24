@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'messages/whatsapp'
   get 'messages/messenger'
   get 'messages/viber'
+  post 'messages/switch/:os', to: 'messages#switch_os',   as: 'switch_os'
 
 
   get  'dispatch',                        to: 'dispatch#index',    as: 'dispatch'

@@ -25,20 +25,28 @@ function updateViberTextCurl() {
   var code = document.getElementById('viberTextCurl');
   var destination = document.getElementById('viberDestination');
   var text = document.getElementById('viberText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "viber_service_msg", "id": "<%= @viber_id.blank? ? '$VIBER_ID' : @viber_id %>" },
-    "to": { "type": "viber_service_msg", "number": "` + destination.value + `" },
-    "message": {
-      "content": {
-        "type": "text",
-        "text": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "viber_service_msg", "id": "<%= @viber_id.blank? ? '$VIBER_ID' : @viber_id %>" },
+      "to": { "type": "viber_service_msg", "number": "` + destination.value + `" },
+      "message": {
+        "content": {
+          "type": "text",
+          "text": "` + text.value + `"
+        }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{ \\"from\\": { \\"type\\": \\"viber_service_msg\\", \\"id\\": \\"<%= @viber_id.blank? ? "$VIBER_ID" : @viber_id %>\\" }, \\"to\\": { \\"type\\": \\"viber_service_msg\\", \\"number\\": \\"` + destination.value + `\\" }, \\"message\\": { \\"content\\": { \\"type\\": \\"text\\", \\"text\\": \\"` + text.value + `\\" } } }`
+  <% end %>
 }
 updateViberTextCurl();
 </script>

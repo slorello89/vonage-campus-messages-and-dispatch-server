@@ -14,34 +14,43 @@ document.getElementById('whatsAppDestination').addEventListener('input', functio
 function updatewhatsAppMTMCurl() {
   var code = document.getElementById('whatsAppMTMCurl');
   var destination = document.getElementById('whatsAppDestination');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
-    "to": { "type": "whatsapp", "number": "` + destination.value + `" },
-    "message": {
-      "content":{
-         "type":"template",
-         "template":{
-            "name":"whatsapp:hsm:technology:nexmo:oh_dev_onboarding_1",
-            "parameters":[
-               {
-                  "default":"- Vonage Connect"
-               },
-               {
-                  "default":"Taking place in SF on Oct 29th-30th."
-               }
-            ]
+
+  <% if @os == "mac" %>
+   code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+   -H 'Authorization: Bearer <%= @app_jwt %>' \\
+   -H 'Content-Type: application/json' \\
+   -H 'Accept: application/json' \\
+   -d '{
+      "from": { "type": "whatsapp", "number": "<%= @whatsAppPhoneNumber.blank? ? '$WHATSAPP_FROM_NUMBER' : @whatsAppPhoneNumber %>" },
+      "to": { "type": "whatsapp", "number": "` + destination.value + `" },
+      "message": {
+         "content":{
+            "type":"template",
+            "template":{
+               "name":"whatsapp:hsm:technology:nexmo:oh_dev_onboarding_1",
+               "parameters":[
+                  {
+                     "default":"- Vonage Connect"
+                  },
+                  {
+                     "default":"Taking place in SF on Oct 29th-30th."
+                  }
+               ]
+            }
+         },
+         "whatsapp": {
+         "policy": "deterministic",
+         "locale": "en-GB"
          }
-      },
-      "whatsapp": {
-        "policy": "deterministic",
-        "locale": "en-GB"
       }
-    }
-  }'`
+   }'`
+  <% else %>
+   code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+   -H "Authorization: Bearer <%= @app_jwt %>" ^
+   -H "Content-Type: application/json" ^
+   -H "Accept: application/json" ^
+   -d "{ \\"from\\": { \\"type\\": \\"whatsapp\\", \\"number\\": \\"<%= @whatsAppPhoneNumber.blank? ? "$WHATSAPP_FROM_NUMBER" : @whatsAppPhoneNumber %>\\" }, \\"to\\": { \\"type\\": \\"whatsapp\\", \\"number\\": \\"` + destination.value + `\\" }, \\"message\\": { \\"content\\":{ \\"type\\":\\"template\\", \\"template\\":{ \\"name\\":\\"whatsapp:hsm:technology:nexmo:oh_dev_onboarding_1\\", \\"parameters\\":[ { \\"default\\":\\"- Vonage Connect\\" }, { \\"default\\":\\"Taking place in SF on Oct 29th-30th.\\" } ] } }, \\"whatsapp\\": { \\"policy\\": \\"deterministic\\", \\"locale\\": \\"en-GB\\" } }}"`
+  <% end %>
 }
 updatewhatsAppMTMCurl();
 </script>

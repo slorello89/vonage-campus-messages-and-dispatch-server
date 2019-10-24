@@ -33,23 +33,31 @@ function updateViberImageCurl() {
   var destination = document.getElementById('viberDestination');
   var url = document.getElementById('viberImageUrl');
   var text = document.getElementById('viberImageText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "viber_service_msg", "id": "<%= @viber_id.blank? ? '$VIBER_ID' : @viber_id %>" },
-    "to": { "type": "viber_service_msg", "number": "` + destination.value + `" },
-    "message": {
-      "content": {
-        "type": "image",
-        "image": { 
-          "url": "` + url.value + `",
-          "caption": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "viber_service_msg", "id": "<%= @viber_id.blank? ? '$VIBER_ID' : @viber_id %>" },
+      "to": { "type": "viber_service_msg", "number": "` + destination.value + `" },
+      "message": {
+        "content": {
+          "type": "image",
+          "image": { 
+            "url": "` + url.value + `",
+            "caption": "` + text.value + `"
+          }
         }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{ \\"from\\": { \\"type\\": \\"viber_service_msg\\", \\"id\\": \\"<%= @viber_id.blank? ? "$VIBER_ID" : @viber_id %>\\" }, \\"to\\": { \\"type\\": \\"viber_service_msg\\", \\"number\\": \\"` + destination.value + `\\" },  \\"message\\": { \\"content\\": { \\"type\\": \\"image\\", \\"image\\": { \\"url\\": \\"` + url.value + `\\", \\"caption\\": \\"` + text.value + `\\" } } } }"`
+  <% end %>
 }
 updateViberImageCurl();
 </script>

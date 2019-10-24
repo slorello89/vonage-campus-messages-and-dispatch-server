@@ -32,20 +32,28 @@ function updateSmsCurl() {
   var code = document.getElementById('smsCurl');
   var destination = document.getElementById('smsDestination');
   var text = document.getElementById('smsText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "sms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
-    "to": { "type": "sms", "number": "` + destination.value + `" },
-    "message": {
-      "content": {
-        "type": "text",
-        "text": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "sms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
+      "to": { "type": "sms", "number": "` + destination.value + `" },
+      "message": {
+        "content": {
+          "type": "text",
+          "text": "` + text.value + `"
+        }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{\\"from\\": { \\"type\\": \\"sms\\", \\"number\\": \\"<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>\\" },  \\"to\\": { \\"type\\": \\"sms\\", \\"number\\": \\"` + destination.value + `\\" }, \\"message\\": { \\"content\\": { \\"type\\": \\"text\\", \\"text\\": \\"` + text.value + `\\" } } }"`
+  <% end %>
 }
 updateSmsCurl();
 </script>

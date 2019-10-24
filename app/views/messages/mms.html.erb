@@ -44,23 +44,31 @@ function updateWhatsAppImageCurl() {
   var destination = document.getElementById('mmsDestination');
   var url = document.getElementById('mmspImageUrl');
   var text = document.getElementById('mmsAppImageText');
-  code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
-  -H 'Authorization: Bearer <%= @app_jwt %>' \\
-  -H 'Content-Type: application/json' \\
-  -H 'Accept: application/json' \\
-  -d '{
-    "from": { "type": "mms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
-    "to": { "type": "mms", "number": "` + destination.value + `" },
-    "message": {
-      "content": {
-        "type": "image",
-        "image": { 
-          "url": "` + url.value + `",
-          "caption": "` + text.value + `"
+  <% if @os == "mac" %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages \\
+    -H 'Authorization: Bearer <%= @app_jwt %>' \\
+    -H 'Content-Type: application/json' \\
+    -H 'Accept: application/json' \\
+    -d '{
+      "from": { "type": "mms", "number": "<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>" },
+      "to": { "type": "mms", "number": "` + destination.value + `" },
+      "message": {
+        "content": {
+          "type": "image",
+          "image": { 
+            "url": "` + url.value + `",
+            "caption": "` + text.value + `"
+          }
         }
       }
-    }
-  }'`
+    }'`
+  <% else %>
+    code.innerHTML = `curl -X POST https://api.nexmo.com/v0.1/messages ^
+    -H "Authorization: Bearer <%= @app_jwt %>" ^
+    -H "Content-Type: application/json" ^
+    -H "Accept: application/json" ^
+    -d "{\\"from\\": { \\"type\\": \\"mms\\", \\"number\\": \\"<%= @nexmo_app.number_msisdn.blank? ? @nexmo_app.name : @nexmo_app.number_msisdn %>\\" },\\"to\\": { \\"type\\": \\"mms\\", \\"number\\": \\"` + destination.value + `\\" },\\"message\\": { \\"content\\": { \\"type\\": \\"image\\", \\"image\\": { \\"url\\": \\"` + url.value + `\\", \\"caption\\": \\"` + text.value + `\\" }  } } }"`
+  <% end %>
 }
 updateWhatsAppImageCurl();
 </script>
