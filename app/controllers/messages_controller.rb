@@ -45,7 +45,7 @@ class MessagesController < ApplicationController
 
   def set_app_jwt
     @app_jwt = NexmoApi.generate_admin_jwt(@nexmo_app)
-    session[:os] ||= "macos"
+    session[:os] ||= "mac"
     @os = session[:os]
   end
 end
