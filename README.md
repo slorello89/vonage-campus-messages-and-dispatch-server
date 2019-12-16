@@ -6,7 +6,7 @@
 A Rails server to support the Messages and Dispatch workshop at Vonage API Training.
 
 
-<a href="https://heroku.com/deploy?template=https://github.com/nexmo-community/vonage-campus-messages-and-dispatch-server" target="_blank">
+<a href="https://heroku.com/deploy?template=https://github.com/slorello89/vonage-campus-messages-and-dispatch-server/tree/training_mods" target="_blank">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
 
