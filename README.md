@@ -3,7 +3,7 @@
 
 # Messages & Dispatch supporting server
 
-A Rails server to support the Messages and Dispatch workshop at Vonage Campus 2019.
+A Rails server to support the Messages and Dispatch workshop at Vonage API Training.
 
 
 <a href="https://heroku.com/deploy?template=https://github.com/nexmo-community/vonage-campus-messages-and-dispatch-server" target="_blank">

@@ -1,6 +1,6 @@
 {
-  "name": " Vonage Campus 2019 - Messages & Dispatch supporting server",
-  "description": "A Rails server to support the Messages and Dispatch workshop at Vonage Campus 2019.",
+  "name": " Vonage Training 2019 - Messages & Dispatch supporting server",
+  "description": "A Rails server to support the Messages and Dispatch workshop at Vonage Training.",
   "repository": "https://github.com/nexmo-community/vonage-campus-messages-and-dispatch-server",
   "logo": "https://www.nexmo.com/wp-content/uploads/2016/04/Nexmo_O.png",
   "keywords": ["nexmo", "nexmo messages and dispatch", "ruby on rails"],
